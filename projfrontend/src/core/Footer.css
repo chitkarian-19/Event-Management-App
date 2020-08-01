@@ -1,0 +1,36 @@
+.centerdiv{
+    height:10vh;
+    display:flex;
+    justify-content:center;
+    
+}
+.alert-class{
+    height:100px;
+    width:100px;
+    background-color:#f5f6fa;
+    border-radius:50px;
+    text-align:center;
+    margin:10px;
+    line-height:110px;
+    box-shadow:1px 4px 2px 2px #dccde1;
+}
+
+a i{
+    transition:  0.3s linear;
+}
+a:hover i{
+    transform: scale(1.8);
+}
+
+.fa-instagram {
+    color:#e84393;
+}
+.fa-youtube{
+    color:#e84118;
+}
+.fa-linkedin{
+   color:#0097e6;
+}
+.fa-twitter{
+    color:#0097e6;
+}
