@@ -5,6 +5,7 @@ const Event = require("../models/event");
 const formidable = require("formidable");
 const _ = require("lodash");
 const fs = require("fs");
+const { isLength } = require('lodash');
 
 exports.signout = (req,res)=>{
     res.clearCookie("token");//due to cookie parser we can delete the cookie
@@ -31,8 +32,10 @@ exports.signup = (req, res)=>{
         lastname:user.lastname,
         role:user.role,
         email:user.email,
-        id:user._id
+        id:user._id,
+        events_created:user.events_created
       });
+
       console.log("User Creation successful");
     })
 }
@@ -59,9 +62,9 @@ exports.login = (req, res)=>{
            res.cookie("token",token,{expire: new Date()+9999});
         
            //send reponse to front end
-           const {_id,name,email,role,lastname}= user;
+           const {_id,name,email,role,lastname,events_created}= user;
            //console.log(user);
-           return res.json({token,user:{_id,name,email,role,lastname}});
+           return res.json({token,user:{_id,name,email,role,lastname,events_created}});
 
 
     })
@@ -80,18 +83,20 @@ exports.isSignedIn = expressJwt({
 });
 
 //custom middlewares
+let user=null;
 exports.isAuthenticated = (req,res,next)=>{
     
     
     //profile is setted in front-end
-    console.log(req.auth._id);
+    
     let check = req.profile && req.auth && req.profile._id == req.auth._id;
     if(!check){
         return res.status(403).json({
-            message:"Not Authenticated"
+            message:"Not Authenticated" 
         })
     }
-    console.log(req.auth.lastname);
+    user=req.auth;
+    
     next();
 }
 
@@ -107,13 +112,15 @@ exports.isAdmin = (req,res,next)=>{
 }
 
 //Event auth Routes
-exports.createEvent = (req,res)=>{
+
+exports.createEvent = (req,res,next)=>{
     
     let form = new formidable.IncomingForm();
     form.keepExtensions = true;   //keep jpeg or png extensions
-    console.log("REQ",req.body);
+    
+    
     form.parse(req,(err,field,file)=>{
-        console.log("Error "+err);
+        console.log(field.userId);
         if(err){
             return res.status(400).json({
                 error:"problem with image"
@@ -140,11 +147,37 @@ exports.createEvent = (req,res)=>{
                     error:err+"Not able to save event in DB"
                 })
             }
-            console.log("Event Creation Successful");
+            console.log("Event Creation Successful",event._id);
+            
             res.json(event);
+            
+            User.findById(req.profile._id).exec((err,user)=>{
+                if(err || !user){
+                    return res.status(403).json({
+                        error:"No user found in DB"
+                    })
+                }
+               
+                
+                let arr=user.events_created;
+                
+                let length = arr.length;
+                arr[length]=event._id;
+               
+                User.findOneAndUpdate({"_id":user._id},{"events_created":arr},
+                    (err,user)=>{
+                     if(err){
+                         return res.status(403).json({
+                             error:"User Found but not able to update the events_created array"
+                         })
+                     }
+                    
+                })
+            })
         })
-    });
-
-   
+    }); 
+     
 }
+
+
 

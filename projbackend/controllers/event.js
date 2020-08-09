@@ -25,16 +25,29 @@ exports.getAllCreatedEvents = (req,res)=>{
     return res.json("It is awaited")
 }
 
+exports.getUserEventById = (req,res)=>{
+    console.log("Req",req.params.eventId);
+    Event.findById(req.params.eventId).exec((err,event)=>{
+        if(err || !event){
+            return res.status(403).json({
+                error:"Event Not Found"
+            })
+        }
+        else {
+            //console.log(event);
+            return res.json(event);
+        }
+    })
+}
+
 exports.getAllEvents = (req,res)=>{
     Event.find().exec((err,events)=>{
-       
         if(err || !events){
             return res.status(403).json({
                 error:"No events found"
             })
         }
-        res.json(events)
-
+        res.json(events);
     });
 }
 

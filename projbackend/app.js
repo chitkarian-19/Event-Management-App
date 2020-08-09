@@ -25,6 +25,9 @@ mongoose.connect(process.env.DATABASE,{
 ).catch((err)=>{
     console.log(err); 
 });
+//Allow updation
+
+mongoose.set('useFindAndModify', false);
 
 //Middlewares
 app.use(bodyParser.json());
@@ -35,7 +38,7 @@ app.use("/api",authRoutes);
 app.use("/api",userRoutes);
 app.use("/api",eventRoutes);
 
-//PORT
+//PORT 
 const port=process.env.PORT || 8000;
 
 

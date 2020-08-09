@@ -31,7 +31,7 @@ const Base =({
                <br/>
                <Link className="btn btn-warning btn-block" to="/login" style={{borderRadius:"20px",height:"50px",fontSize:"25px"}}><strong>Login</strong></Link>
                <br/>
-               <Link className="btn btn-danger btn-block" to="/signin" style={{borderRadius:"20px",height:"50px",fontSize:"25px"}}><strong>Siginin</strong></Link>
+               <Link className="btn btn-danger btn-block" to="/signup" style={{borderRadius:"20px",height:"50px",fontSize:"25px"}}><strong>SignUp</strong></Link>
                <br/>
               
          

@@ -177,7 +177,7 @@ const Login =()=>{
                      </div>
                      <div className="form-group">
                          <label className="control-label col-sm-3 text-white lead font-weight-bold text-underline text-center" ><h3><u>Password</u>:</h3></label>
-                         <input type="passsword" style={inputStyle} value={password} onChange={handleChange("password")} className="fom-control col-sm-9 autofocus" placeholder="....." required/>
+                         <input type="password" style={inputStyle} value={password} onChange={handleChange("password")} className="fom-control col-sm-9 autofocus" required/>
                          <p style={{display:passwordError?"":"none"}} className="text-danger text-right text-lg">Password should be atleast 6 in length</p>
                      </div>
                      
@@ -189,7 +189,7 @@ const Login =()=>{
                              <button className="btn btn-info rounded btn-lg center" style={{margin:"10px"}} onClick={onSubmit} type="submit">Submit</button>
                              
                             </div>
-                            <span style={{marginLeft:"270px"}} ><Link to="/signin" className="text-danger text-lg ">Not have a Account?</Link></span>
+                            <span style={{marginLeft:"270px"}} ><Link to="/signup" className="text-danger text-lg ">Not have a Account?</Link></span>
                        </div>
                   </form>
                  </div>

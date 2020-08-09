@@ -11,7 +11,7 @@ const inputStyle ={
 
 const EventCreation =()=>{
     
-
+    
     const[values,setValues]=useState({
         eventName:"",
         state:"",
@@ -183,8 +183,10 @@ const EventCreation =()=>{
            
            
            event.preventDefault();
+           formData.set("date",date);
            formData.set("hostName",user.name+" "+user.lastname );
            formData.set("emailId",user.email);
+           formData.set("userId",user._id);
            if(eventName.length===0||state.length===0||description.length===0||address.length===0||mobileNo.length===0){
                //no action performed
            }
@@ -196,6 +198,7 @@ const EventCreation =()=>{
            createEvent(formData,user._id,token)
            .then(data=>{
                if(data.error){
+                console.log(data);
                 setValues({
                     ...values,
                     error:data.error

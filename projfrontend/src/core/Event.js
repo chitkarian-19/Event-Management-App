@@ -1,8 +1,10 @@
-import React from "react"
+import React,{useState,useEffect} from "react"
 import Base from "./Base";
 import Menu from "./Menu";
 import {Footer} from "./Footer"
 import './Event.css'
+import Card from './Card'
+import getEvents from "./helper/coreapicalls";
 const mystyle = {
     
     backgroundColor: "#343a40",
@@ -14,7 +16,28 @@ const mystyle2 ={
     transition: ".3s" ,
     boxShadow: "10px 20px 20px rgba(0,0,0,0.8)"
 }
+
 const Event = ()=>{
+    {
+      alert("Wait for a while events are going to load !!!!")
+    }
+    const [events,setEvents ] = useState([]);
+    const [error,setError] = useState();
+    const loadAllEvents = ()=>{ 
+       getEvents().then(
+         data=>{
+           if(!data){
+             setError(true);
+           }
+           else{
+             setEvents(data);
+           }
+         }
+       )
+    }
+    useEffect(()=>{
+       loadAllEvents();
+    },[])
     return(
         <div >
          <Menu/>
@@ -25,6 +48,24 @@ const Event = ()=>{
              
           </div>
         </div>
+         <div class="row text-center ">
+          {
+            events.map((event,index)=>{
+              return(
+                 <div key={index}  className="col-sm-4">
+                   <div style={mystyle}>
+                     
+                    <Card event={event} />
+                     
+                   </div>
+                 </div>
+              );
+            })
+          }
+             
+           
+         </div>
+         { /*
          <div className="row text-center">
              <div className="col-sm-4 ">
                  <div style={mystyle}>
@@ -149,7 +190,7 @@ const Event = ()=>{
             
              
             
-         </div>
+         </div>*/ }
          </div>
          <Footer/>
         </div>
